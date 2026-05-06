@@ -340,7 +340,7 @@ function MobileClipsDrawer({ open, onClose, clips }) {
   continueAfterClip,
 }) {
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/90 p-0 sm:p-4">
+    <div className="fixed inset-0 z-[9999] flex items-end sm:items-center justify-center bg-black/90 p-0 sm:p-4">
       <div
         className="w-full sm:max-w-sm bg-[#111114] border-t-2 sm:border-2 border-red-600 sm:rounded-3xl overflow-hidden flex flex-col shadow-2xl"
         style={{ maxHeight: "100dvh", animation: "slideUp 0.25s ease-out" }}
@@ -489,11 +489,30 @@ export default function App() {
   };
 
   const resetGame = () => {
-    setFollowers(0); setViewers(2); setMoney(100);
-    setCurrentEvent(0); setPendingClip(null);
-    setClipTimeline([]); setLiveChat([]);
-    setChatOpen(false); setClipsOpen(false);
-  };
+    
+document.body.style.pointerEvents = "auto";
+
+  setPendingClip(null);
+
+  setTimeout(() => {
+    setFollowers(0);
+    setViewers(2);
+    setMoney(100);
+
+    setCurrentEvent(0);
+
+    setClipTimeline([]);
+    setLiveChat([]);
+
+    setChatOpen(false);
+    setClipsOpen(false);
+
+    window.scrollTo({
+      top: 0,
+      behavior: "instant",
+    });
+  }, 10);
+};
 
   const ENDINGS = {
     good: { emoji: "👑", label: "YOU MADE IT",    color: "text-yellow-400", border: "border-yellow-800", bg: "bg-yellow-950/20", sub: "From 2 viewers to internet royalty. They said it wouldn't happen." },
@@ -522,7 +541,17 @@ export default function App() {
           </div>
         ))}
       </div>
-      <button onClick={resetGame} className="bg-purple-600 hover:bg-purple-500 active:scale-95 px-7 py-3.5 rounded-xl font-black text-base transition-all w-full sm:w-auto">
+      <button
+  onMouseDown={(e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    setPendingClip(null);
+    setClipsOpen(false);
+    setChatOpen(false);
+
+    resetGame();
+  }} className="bg-purple-600 hover:bg-purple-500 active:scale-95 px-7 py-3.5 rounded-xl font-black text-base transition-all w-full sm:w-auto">
         🔄 Play Again
       </button>
     </div>

@@ -189,7 +189,7 @@ const events = [
     choices: [
       {
         text: "Crash out for the clips",
-        viralClip: true,
+        viralClip: false,
         clipTitle: "LACY FULL STREAM CRASHOUT",
         clipGain: "+45,000 Followers",
         // partner sub revenue + first mid-tier sponsor deal ($5k)
@@ -328,8 +328,8 @@ const events = [
     text: "Your Miami streams become unpredictable and constantly trend online. Every stream is an event.",
     choices: [
       {
-        text: "Double down on the chaos",
-        viralClip: true,
+        text: "Be the clip, you are the clip",
+        viralClip: false,
         clipTitle: "LACY MIAMI CRASHOUT",
         clipGain: "+160,000 Followers",
         // consistent top-tier income: subs + 3 active sponsors + YT ad rev
@@ -337,7 +337,7 @@ const events = [
         nextEvent: 13,
       },
       {
-        text: "Try calming the streams down",
+        text: "Be the fart of twitch with no path",
         viralClip: false,
         effects: { followers: -10000, viewers: -2000, money: -20000 },
         nextEvent: "BAD_calm_miami",
