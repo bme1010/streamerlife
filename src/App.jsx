@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import events from "./data/events";
 
 // ── TikTok clips ────────────────────────────────────────────────
@@ -88,7 +88,7 @@ function useAlerts() {
   return [alerts, push];
 }
 
-function ClipTimeline({ clips }) {
+const ClipTimeline = React.memo(function ClipTimeline({ clips }) {
   const ref = useRef(null);
   useEffect(() => { if (ref.current) ref.current.scrollTop = ref.current.scrollHeight; }, [clips]);
   return (
@@ -97,7 +97,7 @@ function ClipTimeline({ clips }) {
         <span className="text-zinc-400 text-xs font-black tracking-widest uppercase">Clip Timeline</span>
         <span className="text-zinc-700 text-xs">{clips.length} viral</span>
       </div>
-      <div ref={ref} className="flex-1 overflow-y-auto flex flex-col gap-2 min-h-0 pr-0.5">
+      <div ref={ref} className="flex-1 overflow-y-scroll flex flex-col gap-2 min-h-0 pr-0.5">
         {clips.length === 0 && (
           <div className="flex flex-col items-center justify-center h-full gap-3 opacity-30">
             <div className="text-4xl">📼</div>
@@ -122,7 +122,7 @@ function ClipTimeline({ clips }) {
       </div>
     </div>
   );
-}
+});
 
 function OBSBar({ scene, viewers, streamTitle, isLive }) {
   const [elapsed, setElapsed] = useState(0);
@@ -332,6 +332,66 @@ function MobileClipsDrawer({ open, onClose, clips }) {
   );
 }
 
+ // ── Shared viral modal content ─────────────────────────────────
+  const ViralModal = React.memo(function ViralModal({
+  pendingClip,
+  continueAfterClip,
+}) {
+  return (
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/90 p-0 sm:p-4">
+      <div
+        className="w-full sm:max-w-sm bg-[#111114] border-t-2 sm:border-2 border-red-600 sm:rounded-3xl overflow-hidden flex flex-col shadow-2xl"
+        style={{ maxHeight: "100dvh", animation: "slideUp 0.25s ease-out" }}
+      >
+        {/* header */}
+        <div className="bg-red-700 px-5 py-4 flex items-center gap-3 flex-shrink-0">
+          <span className="text-2xl">🔥</span>
+          <div>
+            <div className="font-black text-base leading-tight">VIRAL CLIP</div>
+            <div className="text-red-200 text-xs uppercase tracking-widest mt-0.5">This one changed everything</div>
+          </div>
+        </div>
+        {/* embed */}
+        <div className="flex-1 min-h-0 flex justify-center items-center px-4 pt-4 pb-2 bg-[#0a0a0c]" style={{ minHeight: 180, maxHeight: 320 }}>
+          {pendingClip.embedUrl ? (
+            <iframe
+              src={pendingClip.embedUrl}
+              className="rounded-xl border border-zinc-800 w-full h-full"
+              style={{ minHeight: 180, maxHeight: 300 }}
+              allowFullScreen
+              allow="autoplay; clipboard-write; encrypted-media; picture-in-picture"
+              scrolling="no"
+              title={pendingClip.title}
+            />
+          ) : (
+            <div className="bg-zinc-900 rounded-xl w-full h-40 flex items-center justify-center text-zinc-600 text-sm">
+              📱 clip unavailable
+            </div>
+          )}
+        </div>
+        {/* footer */}
+        <div className="px-5 py-4 bg-[#111114] border-t border-zinc-800 flex-shrink-0">
+          <div className="mb-0.5 font-black text-sm leading-snug">{pendingClip.title}</div>
+          <div className="text-emerald-400 text-sm font-bold mb-4">{pendingClip.gain}</div>
+          <div className="flex gap-2">
+            {pendingClip.linkUrl && (
+              <a href={pendingClip.linkUrl} target="_blank" rel="noopener noreferrer" className="flex-1 bg-zinc-800 hover:bg-zinc-700 text-white text-center py-3 rounded-xl font-bold text-sm transition-all">
+                📱 TikTok
+              </a>
+            )}
+            <button
+              onClick={continueAfterClip}
+              className="flex-1 bg-red-600 hover:bg-red-500 active:scale-95 py-3 rounded-xl font-black text-sm transition-all"
+            >
+              Continue →
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+});
+
 // ── Main App ─────────────────────────────────────────────────────
 export default function App() {
   const [followers,    setFollowers]    = useState(0);
@@ -439,60 +499,7 @@ export default function App() {
     bad:  { emoji: "💀", label: "STREAM OVER",    color: "text-red-400",    border: "border-red-900",    bg: "bg-red-950/20",    sub: "The grind broke you. But hey — at least you tried." },
   };
 
-  // ── Shared viral modal content ─────────────────────────────────
-  const ViralModal = () => (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/90 p-0 sm:p-4">
-      <div
-        className="w-full sm:max-w-sm bg-[#111114] border-t-2 sm:border-2 border-red-600 sm:rounded-3xl overflow-hidden flex flex-col shadow-2xl"
-        style={{ maxHeight: "100dvh", animation: "slideUp 0.25s ease-out" }}
-      >
-        {/* header */}
-        <div className="bg-red-700 px-5 py-4 flex items-center gap-3 flex-shrink-0">
-          <span className="text-2xl">🔥</span>
-          <div>
-            <div className="font-black text-base leading-tight">VIRAL CLIP</div>
-            <div className="text-red-200 text-xs uppercase tracking-widest mt-0.5">This one changed everything</div>
-          </div>
-        </div>
-        {/* embed */}
-        <div className="flex-1 min-h-0 flex justify-center items-center px-4 pt-4 pb-2 bg-[#0a0a0c]" style={{ minHeight: 180, maxHeight: 320 }}>
-          {pendingClip.embedUrl ? (
-            <iframe
-              src={pendingClip.embedUrl}
-              className="rounded-xl border border-zinc-800 w-full h-full"
-              style={{ minHeight: 180, maxHeight: 300 }}
-              allowFullScreen
-              allow="autoplay; clipboard-write; encrypted-media; picture-in-picture"
-              scrolling="no"
-              title={pendingClip.title}
-            />
-          ) : (
-            <div className="bg-zinc-900 rounded-xl w-full h-40 flex items-center justify-center text-zinc-600 text-sm">
-              📱 clip unavailable
-            </div>
-          )}
-        </div>
-        {/* footer */}
-        <div className="px-5 py-4 bg-[#111114] border-t border-zinc-800 flex-shrink-0">
-          <div className="mb-0.5 font-black text-sm leading-snug">{pendingClip.title}</div>
-          <div className="text-emerald-400 text-sm font-bold mb-4">{pendingClip.gain}</div>
-          <div className="flex gap-2">
-            {pendingClip.linkUrl && (
-              <a href={pendingClip.linkUrl} target="_blank" rel="noopener noreferrer" className="flex-1 bg-zinc-800 hover:bg-zinc-700 text-white text-center py-3 rounded-xl font-bold text-sm transition-all">
-                📱 TikTok
-              </a>
-            )}
-            <button
-              onClick={continueAfterClip}
-              className="flex-1 bg-red-600 hover:bg-red-500 active:scale-95 py-3 rounded-xl font-black text-sm transition-all"
-            >
-              Continue →
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+ 
 
   // ── Ending card ────────────────────────────────────────────────
   const EndingCard = ({ cfg }) => (
@@ -525,7 +532,12 @@ export default function App() {
       <AlertOverlay alerts={alerts} />
 
       {/* Viral clip modal */}
-      {pendingClip && <ViralModal />}
+      {pendingClip && (
+  <ViralModal
+    pendingClip={pendingClip}
+    continueAfterClip={continueAfterClip}
+  />
+)}
 
       {/* Mobile chat & clips drawers */}
       <MobileChatDrawer open={chatOpen} onClose={() => setChatOpen(false)} liveChat={liveChat} viewers={viewers} />
@@ -687,7 +699,7 @@ export default function App() {
           <OBSBar scene={scene} viewers={viewers} streamTitle={streamTitle} isLive={!!streamTitle} />
 
           {/* Three-column body */}
-          <div className="grid grid-cols-12 gap-4">
+          <div className="grid grid-cols-12 gap-4 items-start">
 
             {/* Clip Timeline */}
             <div className="col-span-3 bg-[#111114] border border-zinc-800 rounded-2xl p-4" style={{ height: 510 }}>
@@ -743,7 +755,7 @@ export default function App() {
               </div>
               <div
                 ref={chatBoxRef}
-                className="flex-1 overflow-y-auto flex flex-col gap-1.5 p-3"
+                className="flex-1 overflow-y-scroll flex flex-col gap-1.5 p-3"
                 style={{ scrollBehavior: "smooth" }}
               >
                 {liveChat.length === 0 && (
