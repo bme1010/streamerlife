@@ -16,7 +16,9 @@ const TIKTOK_CLIPS = {
   15: { embed: "https://www.tiktok.com/embed/v2/7388555417611160878", link: "https://www.tiktok.com/@gamingnetw0rk/video/7388555417611160878" },
   16: { embed: "https://www.tiktok.com/embed/v2/7633309834007301408", link: "https://www.tiktok.com/@todaysclip11/video/7633309834007301408" },
   17: { embed: "https://www.tiktok.com/embed/v2/7544570848770805023", link: "https://www.tiktok.com/@clipsgalorex96/video/7544570848770805023" },
+  18: { embed: "https://www.tiktok.com/embed/v2/7589488407546449207", link: "https://www.tiktok.com/@mandoeditss/video/7589488407546449207" },
   19: { embed: "https://www.tiktok.com/embed/v2/7636468633857772822", link: "https://www.tiktok.com/@mikeyclipztv/video/7636468633857772822" },
+
 };
 
 const EVENT_TITLES = {

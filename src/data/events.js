@@ -128,13 +128,13 @@ const events = [
   {
     id: 5,
     age: 18,
-    title: "The Weird Side Character",
-    text: "People online begin clipping your awkward moments. You're becoming the weird side character everyone talks about.",
+    title: "The Beginning",
+    text: "People online begin clipping you. You're becoming more popular as the days go by.",
     choices: [
       {
-        text: "Lean fully into the embarrassment",
+        text: "Start Clip Farming",
         viralClip: true,
-        clipTitle: "LACY AWKWARD MOMENTS COMPILATION",
+        clipTitle: "LACY AWKWARD CLIPS COMPILATION",
         clipGain: "+12,000 Followers",
         // Twitch affiliate income + first merch drop + subs ramping
         effects: { followers: 12000, viewers: 600, money: 3500 },
@@ -153,21 +153,24 @@ const events = [
     id: 6,
     age: 18,
     title: "Lost Kid Moment",
-    text: "During an IRL stream with Clix, you help a lost kid reunite with his parents. The clip spreads everywhere online.",
+    text: "During an IRL stream with Clix, you talk to a lost kid. The clip spreads everywhere online.",
     choices: [
       {
-        text: "Stay genuine and help the kid",
+        text: "Farm the clip and talk to the kid",
         viralClip: true,
-        clipTitle: "LACY HELPS LOST KID ON STREAM",
+        clipTitle: "LACY FINDS LOST KID ON STREAM",
         clipGain: "+20,000 Followers",
         // viral press = Twitch partner incoming, subs spike, first sponsor inquiry
         effects: { followers: 20000, viewers: 1200, money: 7500 },
         nextEvent: 7,
       },
       {
-        text: "Farm the moment for content",
-        viralClip: false,
-        effects: { followers: 3000, viewers: 500, money: 1000 },
+        text: "Talk to the kid unknowingly that he was lost",
+         viralClip: true,
+        clipTitle: "LACY FINDS LOST KID ON STREAM",
+        clipGain: "+20,000 Followers",
+        // viral press = Twitch partner incoming, subs spike, first sponsor inquiry
+        effects: { followers: 20000, viewers: 1200, money: 7500 },
         nextEvent: 7,
       },
     ],
@@ -181,11 +184,11 @@ const events = [
   {
     id: 7,
     age: 19,
-    title: "Crashout Stream",
-    text: "A stream argument spirals. Chat is losing it. This could be your biggest moment or your worst.",
+    title: "Crashout Clips Phase",
+    text: "As you start to gain publicity, what better way than to fake crashout?",
     choices: [
       {
-        text: "Double down — crash out for the clips",
+        text: "Crash out for the clips",
         viralClip: true,
         clipTitle: "LACY FULL STREAM CRASHOUT",
         clipGain: "+45,000 Followers",
@@ -194,7 +197,7 @@ const events = [
         nextEvent: 8,
       },
       {
-        text: "Apologize immediately and end stream",
+        text: "Let chat own you and end stream spiraling a different path...",
         viralClip: false,
         effects: { followers: -8000, viewers: -500, money: -2000 },
         nextEvent: "BAD_soft_apology",
@@ -211,7 +214,7 @@ const events = [
     id: 8,
     age: 20,
     title: "Move to Dallas",
-    text: "You move to Dallas to stream full-time with creators. This is your shot at going from online character to real deal.",
+    text: "You move to Dallas. This is your shot at going from a streamer to a star.",
     choices: [
       {
         text: "Fully embrace chaotic IRL streams",
@@ -243,7 +246,7 @@ const events = [
     text: "Your awkward relationship clips with Darla begin exploding across TikTok and Twitter.",
     choices: [
       {
-        text: "Lean fully into relationship content",
+        text: "Lean fully into girl content",
         viralClip: true,
         clipTitle: "LACY + DARLA VIRAL COMPILATION",
         clipGain: "+80,000 Followers",
@@ -380,7 +383,7 @@ const events = [
     id: 14,
     age: 21,
     title: "FaZe Invitation",
-    text: "FaZe officially offers you a contract. This is legitimacy. This is the org.",
+    text: "FaZe officially offers you a contract. This is 'legitimacy.' This is the org.",
     choices: [
       {
         text: "Join FaZe immediately",
@@ -500,7 +503,9 @@ const events = [
     choices: [
       {
         text: "Leave FaZe and build something new",
-        viralClip: false,
+        viralClip: true,
+        clipTitle: "END OF FAZE",
+        clipGain: "+0 Followers",
         // lose org salary but keep personal income; drama bump drives subs
         effects: { followers: 20000, viewers: -500, money: 700000 },
         nextEvent: 19,
